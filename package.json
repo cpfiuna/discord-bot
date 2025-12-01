@@ -1,0 +1,24 @@
+{
+  "name": "cpf-discord-bot",
+  "version": "1.0.0",
+  "description": "Bot de Discord para el Club de Programación FIUNA",
+  "main": "src/index.js",  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "deploy": "node src/deploy-commands.js",
+    "deploy-global": "node src/deploy-commands.js --global"
+  },
+  "keywords": ["discord", "bot", "fiuna", "programacion"],
+  "author": "Club de Programación FIUNA",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "sqlite3": "^5.1.6",
+    "node-cron": "^3.0.3",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
