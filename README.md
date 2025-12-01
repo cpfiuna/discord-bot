@@ -1,4 +1,4 @@
-# CPF Discord Bot
+# Bot del Discord oficial del Club de Programación FIUNA
 
 <div align="center">
 
