@@ -7,9 +7,9 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-active-success)
 
-Bot oficial del Club de Programación FIUNA (CPF). Sistema modular de Discord con comandos slash, eventos automatizados y arquitectura escalable.
+Bot oficial del Club de Programación FIUNA. Sistema modular de Discord con comandos slash, eventos automatizados y arquitectura escalable.
 
-[Documentación Completa](./discord-bot-docs/) · [Reportar Bug](https://github.com/davidgimenezs/discord-bot/issues) · [Sugerir Feature](https://github.com/davidgimenezs/discord-bot/issues)
+[Documentación Completa](./discord-bot-docs/) · [Reportar Bug](https://github.com/cpfiuna/discord-bot/issues) · [Sugerir Feature](https://github.com/cpfiuna/discord-bot/issues)
 
 </div>
 
@@ -169,7 +169,7 @@ El bot está configurado para desplegarse en Azure VM con PM2.
 ssh user@VM_IP
 
 # Navegar al directorio del bot
-cd /opt/cpf-bot
+cd /opt/discord-bot
 
 # Actualizar código
 git pull origin main
@@ -179,7 +179,7 @@ npm ci --production
 npm run deploy-global
 
 # Reiniciar con PM2
-pm2 restart cpf-bot
+pm2 restart discord-bot
 ```
 
 ### Gestión del Bot
@@ -189,10 +189,10 @@ pm2 restart cpf-bot
 pm2 status
 
 # Ver logs
-pm2 logs cpf-bot
+pm2 logs discord-bot
 
 # Reiniciar bot
-pm2 restart cpf-bot
+pm2 restart discord-bot
 
 # Monitoreo en tiempo real
 pm2 monit
@@ -239,9 +239,9 @@ npm run deploy-global # Registrar comandos globalmente
 
 ## 📞 Soporte
 
-- 💬 **Discord**: Únete al servidor del CPF FIUNA
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/davidgimenezs/discord-bot/issues)
-- 💡 **Feature Requests**: [GitHub Issues](https://github.com/davidgimenezs/discord-bot/issues)
+- 💬 **Discord**: Únete al servidor del Club de Programación FIUNA
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/cpfiuna/discord-bot/issues)
+- 💡 **Feature Requests**: [GitHub Issues](https://github.com/cpfiuna/discord-bot/issues)
 
 ## 📄 Licencia
 
