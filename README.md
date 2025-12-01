@@ -9,7 +9,7 @@
 
 Bot oficial del Club de Programación FIUNA. Sistema modular de Discord con comandos slash, eventos automatizados y arquitectura escalable.
 
-[Reportar Bug](https://github.com/cpfiuna/discord-bot/issues) · [Sugerir Feature](https://github.com/cpfiuna/discord-bot/issues)
+[Reportar Bug](https://github.com/cpfiuna/discord-bot/issues) · [Sugerir Funcionalidad](https://github.com/cpfiuna/discord-bot/issues)
 
 </div>
 
