@@ -34,7 +34,7 @@ module.exports = {
             if (process.env.LOG_CHANNEL_ID) {
                 client.channels.fetch(process.env.LOG_CHANNEL_ID)
                     .then(ch => {
-                        if (ch && ch.isTextBased && ch.isTextBased()) {
+                        if (ch && ch.isTextBased()) {
                             ch.send({ content: `✅ Bot started on instance **${instanceId}** at ${new Date().toISOString()}` })
                                 .catch(e => console.error('Failed to send startup log to channel:', e));
                         }

@@ -12,22 +12,27 @@ CPF Bot es un bot de Discord desarrollado por el Club de Programación de la Fac
 
 ### Funcionalidades principales:
 - Comandos de información sobre el club
-- Sistema de encuestas
-- Creación de salas de voz temporales
-- Compartir código formateado
-- Sistema de recordatorios
+- Sistema de encuestas interactivas (2-4 opciones)
+- Creación de salas de voz temporales (auto-eliminación tras 1 min vacías)
+- Compartir código formateado en 11 lenguajes
+- Sistema de recordatorios personales y globales (límite 10 por usuario)
 - Mensajes de bienvenida automáticos
-- Gestión de eventos del servidor
+- Listado de emojis personalizados con IDs
+- Sistema de cooldowns para prevenir spam
+- Comandos de prueba para administradores
 
 ## 3. Uso Aceptable
 
-Al usar CPF Bot, te comprometes a:
+Al usar CPF Bot, te comprometés a:
 
-- **No abusar** de los comandos del bot (spam, flood, o uso excesivo)
+- **No abusar** de los comandos del bot (respetá el cooldown de 3 segundos entre comandos)
 - **No intentar** explotar vulnerabilidades o bugs del bot
 - **No utilizar** el bot para actividades ilegales o que violen los Términos de Servicio de Discord
-- **Respetar** a otros usuarios al usar funciones públicas del bot (encuestas, salas, etc.)
-- **No compartir** código malicioso o contenido inapropiado a través del bot
+- **Respetar** a otros usuarios al usar funciones públicas del bot (encuestas, salas, código compartido)
+- **No compartir** código malicioso, contenido inapropiado o spam a través del bot
+- **No crear** recordatorios excesivos (límite de 10 activos por usuario)
+- **No crear** salas de voz con nombres ofensivos o inapropiados
+- **No abusar** de los comandos administrativos si tenés permisos
 
 ## 4. Moderación y Sanciones
 
@@ -47,10 +52,13 @@ El equipo de CPF FIUNA se reserva el derecho de:
 
 ## 6. Recordatorios y Datos Temporales
 
-- Los recordatorios se almacenan en memoria temporal
-- Los recordatorios se perderán si el bot se reinicia
+- Los recordatorios se almacenan en memoria temporal (máximo 10 activos por usuario)
+- Los recordatorios se perderán si el bot se reinicia antes de ejecutarse
 - No garantizamos la entrega de recordatorios en caso de fallos técnicos
-- Las salas de voz temporales se eliminan automáticamente cuando quedan vacías
+- Los recordatorios globales requieren permisos especiales (Administrador, Gestionar Servidor, o roles específicos)
+- Las salas de voz temporales se eliminan automáticamente después de 1 minuto vacías
+- El bot intenta enviar recordatorios personales por DM, pero usará el canal si tus DMs están bloqueados
+- Los datos de cooldown y tracking de canales se almacenan temporalmente en memoria
 
 ## 7. Propiedad Intelectual
 
@@ -64,10 +72,14 @@ El equipo de CPF FIUNA se reserva el derecho de:
 El Club de Programación FIUNA no se hace responsable por:
 
 - Daños directos o indirectos derivados del uso del bot
-- Pérdida de datos o información
-- Interrupciones del servicio
-- Contenido generado por usuarios a través del bot
-- Errores en recordatorios, encuestas o cualquier otra funcionalidad
+- Pérdida de datos o información (recordatorios, salas temporales, etc.)
+- Interrupciones del servicio por mantenimiento o fallos técnicos
+- Contenido generado por usuarios a través del bot (código, encuestas, etc.)
+- Errores en recordatorios, encuestas, salas de voz o cualquier otra funcionalidad
+- Pérdida de recordatorios debido a reinicios del bot
+- Eliminación automática de salas de voz por inactividad
+- Fallos en la entrega de mensajes de bienvenida o notificaciones
+- Alcance del límite de recordatorios (10 por usuario)
 
 ## 9. Modificaciones a los Términos
 

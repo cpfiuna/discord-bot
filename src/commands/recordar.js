@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const cron = require('node-cron');
 
 // Store active reminders in memory (in production, use a database)
 const activeReminders = new Map();
@@ -95,18 +94,28 @@ module.exports = {
 
             // Check permissions for global reminders
             if (isGlobal) {
+                if (!interaction.guild) {
+                    const embed = new EmbedBuilder()
+                        .setTitle('❌ Error')
+                        .setDescription('Los recordatorios globales solo pueden crearse en un servidor.')
+                        .setColor('#EF4444');
+                    await safeNotify({ embeds: [embed], flags: 64 });
+                    return;
+                }
+
                 const member = interaction.member;
                 const hasPermission = member.permissions.has('Administrator') ||
+                    member.permissions.has('ManageGuild') ||
                     member.roles.cache.some(role => 
-                        role.name === 'Comision Directiva' || 
-                        role.name === 'Lead' ||
-                        role.name === 'Admin'
+                        role.name.toLowerCase().includes('comision') || 
+                        role.name.toLowerCase().includes('lead') ||
+                        role.name.toLowerCase().includes('admin')
                     );
 
                 if (!hasPermission) {
                     const embed = new EmbedBuilder()
                         .setTitle('❌ Permisos insuficientes')
-                        .setDescription('Solo los miembros con rol de **Admin**, **Comision Directiva** o **Lead** pueden crear recordatorios globales.')
+                        .setDescription('Solo los miembros con permisos de administrador o roles especiales pueden crear recordatorios globales.')
                         .setColor('#EF4444');
                     await safeNotify({ embeds: [embed], flags: 64 });
                     return;
@@ -153,6 +162,18 @@ module.exports = {
                 return;
             }
 
+            // Check if user has too many reminders
+            const userReminders = activeReminders.get(userId) || [];
+            const MAX_REMINDERS = 10;
+            if (userReminders.length >= MAX_REMINDERS) {
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Límite alcanzado')
+                    .setDescription(`No puedes tener más de ${MAX_REMINDERS} recordatorios activos. Cancela algunos con \`/recordar cancelar\` primero.`)
+                    .setColor('#EF4444');
+                await safeNotify({ embeds: [embed], flags: 64 });
+                return;
+            }
+
             // Generate unique reminder ID
             const reminderId = Date.now();
             
@@ -178,21 +199,39 @@ module.exports = {
                         });
                     } else {
                         // Send DM to user
-                        await interaction.user.send({ embeds: [reminderEmbed] });
+                        try {
+                            await interaction.user.send({ embeds: [reminderEmbed] });
+                        } catch (dmError) {
+                            console.error('Failed to send DM reminder:', dmError);
+                            // Try to notify in the original channel
+                            if (interaction.channel) {
+                                try {
+                                    await interaction.channel.send({
+                                        content: `<@${userId}>`,
+                                        embeds: [reminderEmbed.setFooter({ text: 'No pude enviarte un DM, así que te aviso aquí' })]
+                                    });
+                                } catch (channelError) {
+                                    console.error('Failed to send reminder in channel:', channelError);
+                                }
+                            }
+                        }
                     }
                     
                     // Remove from active reminders
                     const userReminders = activeReminders.get(userId) || [];
                     activeReminders.set(userId, userReminders.filter(r => r.id !== reminderId));
+                    if (userReminders.length === 0) {
+                        activeReminders.delete(userId);
+                    }
                 } catch (error) {
                     console.error('Error sending reminder:', error);
                 }
             }, delay);
 
-            // Store reminder info
-            const userReminders = activeReminders.get(userId) || [];
+            // Store reminder info (reuse variable from earlier check)
             userReminders.push({
                 id: reminderId,
+                userId: userId,
                 mensaje,
                 targetDate,
                 timeoutId,

@@ -24,6 +24,17 @@ for (const file of commandFiles) {
 // Construir y preparar instancia del módulo REST
 const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
+// Validate required environment variables
+if (!process.env.DISCORD_TOKEN) {
+    console.error('❌ DISCORD_TOKEN is not set. Create a `.env` file with DISCORD_TOKEN=your_token');
+    process.exit(1);
+}
+
+if (!process.env.DISCORD_CLIENT_ID) {
+    console.error('❌ DISCORD_CLIENT_ID is not set. Add DISCORD_CLIENT_ID to your .env file');
+    process.exit(1);
+}
+
 // Registrar comandos
 (async () => {
     try {

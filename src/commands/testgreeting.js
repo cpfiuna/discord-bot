@@ -9,6 +9,18 @@ module.exports = {
         .addUserOption(option => option.setName('user').setDescription('Usuario a saludar').setRequired(false)),
 
     async execute(interaction) {
+        // Check admin permissions
+        if (!interaction.guild) {
+            return interaction.reply({ content: 'Este comando solo puede usarse en un servidor.', flags: 64 });
+        }
+
+        const member = interaction.member;
+        const hasPermission = member.permissions.has('Administrator');
+
+        if (!hasPermission) {
+            return interaction.reply({ content: '❌ Este comando solo puede ser usado por administradores.', flags: 64 });
+        }
+
         const guild = interaction.guild;
         const targetUser = interaction.options.getUser('user') || interaction.user;
 
@@ -45,17 +57,17 @@ module.exports = {
         };
 
         // If for some reason interaction.channel is not available or not writable, fall back to configured channel or system channel.
-        if (!channel || !(channel.isTextBased && channel.permissionsFor(guild.members.me)?.has('SendMessages'))) {
+        if (!channel || !channel.isTextBased() || !channel.permissionsFor(guild.members.me)?.has('SendMessages')) {
             const channelId = process.env.GREETING_CHANNEL_ID;
             channel = channelId ? guild.channels.cache.get(channelId) : null;
             if (!channel) channel = guild.systemChannel || null;
             if (!channel) {
-                channel = guild.channels.cache.find(c => c.isTextBased && c.permissionsFor(guild.members.me)?.has('SendMessages')) || null;
+                channel = guild.channels.cache.find(c => c.isTextBased() && c.permissionsFor(guild.members.me)?.has('SendMessages')) || null;
             }
         }
 
-        if (!channel) {
-            const payload = { content: 'No hay ningún canal disponible para enviar el saludo.', flags: 64 };
+        if (!channel || !channel.permissionsFor(guild.members.me)?.has('SendMessages')) {
+            const payload = { content: 'No hay ningún canal disponible para enviar el saludo o faltan permisos.', flags: 64 };
             await safeNotify(payload);
             return;
         }
@@ -65,7 +77,7 @@ module.exports = {
             .setTitle('👋 ¡Bienvenido/a al servidor! 💻')
             .setDescription(`¡Hola <@${targetUser.id}>! Bienvenido al servidor oficial del Club de Programación FIUNA <:cpf:1379350250099179540>. Nos alegra que estés acá.`)
             .setColor('#3C83F6')
-            .setThumbnail(targetUser.displayAvatarURL ? targetUser.displayAvatarURL({ extension: 'png', size: 256 }) : null)
+            .setThumbnail(targetUser.displayAvatarURL({ extension: 'png', size: 256 }))
             .addFields(
                 { name: '', value: 'Este es un espacio para aprender, compartir y construir comunidad entre todos. Sentite libre de presentarte, unirte a las conversaciones y preguntar sobre lo que sea.', inline: false },
                 { name: '', value: '¡Disfrutá tu estadía y bienvenido/a a la comunidad!', inline: false }

@@ -34,9 +34,10 @@ Recopilamos información sobre cómo usás el bot:
 
 Algunos datos se almacenan temporalmente en la memoria del bot:
 
-- **Recordatorios activos:** mensaje, fecha/hora programada, ID de usuario
-- **Salas de voz temporales:** nombre, descripción, creador, miembros
-- **Encuestas:** pregunta, opciones, creador
+- **Recordatorios activos:** mensaje, fecha/hora programada, ID de usuario, tipo (personal/global), canal destino, timeout ID (máximo 10 por usuario)
+- **Salas de voz temporales:** nombre, descripción, creador, channel ID, timestamp de creación, timestamps de vacío, timeouts de eliminación
+- **Encuestas:** pregunta, opciones, creador (persistente en Discord hasta eliminar mensaje)
+- **Cooldowns:** timestamp de último uso por comando y usuario (temporal, 3 segundos default)
 
 **Importante:** Estos datos temporales se pierden cuando el bot se reinicia o apaga.
 
@@ -48,11 +49,13 @@ Usamos tus datos para:
 
 - **Ejecutar comandos** que solicitás
 - **Enviar mensajes de bienvenida** personalizados con tu nombre y avatar
-- **Programar recordatorios** y enviártelos en el momento indicado
-- **Gestionar salas de voz** temporales y mostrar quién las creó
-- **Crear encuestas** y atribuirlas a su creador
-- **Formatear código** que compartís
-- **Verificar permisos** para comandos administrativos (recordatorios globales)
+- **Programar recordatorios** y enviártelos en el momento indicado (con fallback a canal si DM falla)
+- **Gestionar salas de voz** temporales con auto-eliminación tras 1 minuto vacías
+- **Crear encuestas** con 2-4 opciones y atribuirlas a su creador
+- **Formatear código** que compartís en 11 lenguajes diferentes
+- **Listar emojis** personalizados del servidor con sus IDs
+- **Verificar permisos** para comandos administrativos y recordatorios globales
+- **Aplicar cooldowns** para prevenir spam (3 segundos entre comandos)
 
 ### 3.2 Logging y Debugging
 
@@ -106,9 +109,11 @@ Podemos divulgar información si:
 
 ### 5.1 Datos Temporales
 
-- **Recordatorios:** se eliminan automáticamente después de ejecutarse o al reiniciar el bot
-- **Salas de voz:** se eliminan cuando quedan vacías
-- **Encuestas:** permanecen en Discord hasta que se elimine el mensaje
+- **Recordatorios:** se eliminan automáticamente después de ejecutarse, al cancelarlos, o al reiniciar el bot. Límite de 10 recordatorios activos por usuario.
+- **Salas de voz:** se eliminan automáticamente cuando quedan vacías por 1 minuto continuo
+- **Encuestas:** permanecen en Discord hasta que se elimine el mensaje (no controlado por el bot)
+- **Cooldowns:** se limpian automáticamente después del tiempo configurado (3 segundos default)
+- **Tracking de canales vacíos:** timestamps y timeouts se limpian al eliminar canales o al reiniciar
 
 ### 5.2 Logs del Sistema
 
@@ -128,9 +133,14 @@ Implementamos medidas de seguridad para proteger tus datos:
 
 - **Acceso restringido:** solo administradores del CPF tienen acceso al servidor del bot
 - **Conexiones seguras:** comunicación cifrada con la API de Discord (HTTPS/WSS)
-- **Variables de entorno:** tokens y credenciales protegidos
+- **Variables de entorno:** tokens y credenciales protegidos en archivos .env (no versionados)
 - **Logs protegidos:** acceso limitado solo para debugging autorizado
 - **Código abierto:** el código fuente está disponible en GitHub para auditoría
+- **Validación de entrada:** todos los comandos validan formato, longitud y permisos
+- **Rate limiting:** cooldowns implementados para prevenir spam y abuso
+- **Cleanup automático:** recursos (timeouts, maps, listeners) se limpian apropiadamente
+- **Verificación de permisos:** operaciones sensibles requieren permisos específicos
+- **Manejo de errores:** try-catch comprehensivo con fallbacks seguros
 
 **Sin embargo:**
 - No podemos garantizar seguridad absoluta
@@ -144,9 +154,10 @@ Implementamos medidas de seguridad para proteger tus datos:
 Tenés derecho a:
 
 - **Dejar de usar el bot** en cualquier momento
-- **Cancelar recordatorios** activos con `/recordar cancelar`
-- **Eliminar salas de voz** que creaste (saliendo del canal)
+- **Cancelar recordatorios** activos con `/recordar cancelar id:<ID>` (usa `/recordar listar` para ver IDs)
+- **Eliminar salas de voz** que creaste (automáticamente se eliminan tras 1 minuto vacías)
 - **Solicitar información** sobre qué datos tenemos de vos
+- **Ver código fuente** en GitHub para entender qué hace el bot
 
 ### 7.2 Eliminación de Datos
 

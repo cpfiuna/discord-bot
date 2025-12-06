@@ -12,7 +12,7 @@ module.exports = {
         if (!channel) channel = guild.systemChannel || null;
 
         if (!channel) {
-            channel = guild.channels.cache.find(c => c.isTextBased && c.isTextBased() && c.permissionsFor(guild.members.me)?.has('SendMessages')) || null;
+            channel = guild.channels.cache.find(c => c.isTextBased() && c.permissionsFor(guild.members.me)?.has('SendMessages')) || null;
         }
 
         if (!channel) {

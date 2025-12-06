@@ -17,7 +17,7 @@ async function sendError(client, { commandName, interaction, error, instanceId }
 
     try {
         const ch = await client.channels.fetch(process.env.LOG_CHANNEL_ID).catch(() => null);
-        if (!ch || !(ch.isTextBased && ch.isTextBased())) {
+        if (!ch || !ch.isTextBased()) {
             console.error('Configured LOG_CHANNEL_ID is not a text channel or could not be fetched.');
             return;
         }
@@ -44,14 +44,12 @@ async function sendError(client, { commandName, interaction, error, instanceId }
     }
 }
 
-module.exports = { sendError };
-
 async function sendUsage(client, { commandName, interaction, instanceId }) {
     if (!process.env.LOG_CHANNEL_ID) return;
 
     try {
         const ch = await client.channels.fetch(process.env.LOG_CHANNEL_ID).catch(() => null);
-        if (!ch || !(ch.isTextBased && ch.isTextBased())) return;
+        if (!ch || !ch.isTextBased()) return;
 
         const user = interaction?.user;
         const guild = interaction?.guild;

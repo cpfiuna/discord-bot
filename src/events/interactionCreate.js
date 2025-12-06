@@ -29,7 +29,7 @@ module.exports = {
                 const expirationTime = timestamps.get(userId) + cooldownAmount;
                 if (now < expirationTime) {
                     const timeLeft = Math.ceil((expirationTime - now) / 1000);
-                    return interaction.reply({ content: `Enfriamiento: espera ${timeLeft}s antes de usar \\/${command.data.name} de nuevo.`, flags: 64 });
+                    return interaction.reply({ content: `Enfriamiento: espera ${timeLeft}s antes de usar /${command.data.name} de nuevo.`, flags: 64 });
                 }
             }
 

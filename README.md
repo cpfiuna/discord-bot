@@ -31,19 +31,21 @@ Bot oficial del Club de Programación FIUNA. Sistema modular de Discord con coma
 ### Core Features
 - ⚡ **Comandos Slash**: Sistema completo de slash commands con Discord.js v14
 - 🎯 **Sistema de Eventos**: Manejo modular de eventos de Discord
-- 📝 **Logging Avanzado**: Sistema de logs con soporte para archivos y canales
+- 📝 **Logging Avanzado**: Sistema de logs con soporte para canales de Discord
 - 🔄 **Auto-reload**: Desarrollo con hot-reload usando nodemon
 - 🚀 **Deploy Automatizado**: Script para registrar comandos local o globalmente
-- ⏰ **Sistema de Recordatorios**: Recordatorios personales y globales con soporte para fechas
+- ⏰ **Sistema de Recordatorios**: Recordatorios personales y globales con soporte para fechas, límite de 10 por usuario
+- ⏱️ **Cooldowns**: Sistema de enfriamiento configurable (3s default) para prevenir spam
 
 ### Gestión
-- 👋 **Bienvenidas Automáticas**: Mensaje de bienvenida personalizable para nuevos miembros
-- 🎙️ **Salas de Voz Temporales**: Creación y gestión automática de canales de voz
-- 📊 **Encuestas Interactivas**: Sistema de encuestas con reacciones
-- 💻 **Compartir Código**: Formateo automático de código con sintaxis
-- 📈 **Monitoreo**: Identificación de instancia y logging de eventos
+- 👋 **Bienvenidas Automáticas**: Mensaje de bienvenida personalizable con fallback a DM si fallan
+- 🎙️ **Salas de Voz Temporales**: Auto-creación y eliminación tras 1 minuto vacías con seguimiento de miembros
+- 📊 **Encuestas Interactivas**: Sistema de encuestas con 2-4 opciones y reacciones paralelas
+- 💻 **Compartir Código**: Modal para código formateado con 11 lenguajes soportados (límite 4000 chars)
+- 🎨 **Gestión de Emojis**: Lista emojis personalizados con IDs y formato de uso
+- 📈 **Monitoreo**: Identificación de instancia y logging de comandos/errores
 - ⚙️ **Configurable**: Variables de entorno para personalización completa
-- 🛡️ **Manejo de Errores**: Sistema robusto de error handling
+- 🛡️ **Manejo de Errores**: Try-catch comprehensivo con fallbacks y validación de permisos
 
 ### Producción
 - ☁️ **Azure Deployment**: Desplegado en Azure VM
@@ -131,11 +133,14 @@ BOT_PRESENCE="Usa /help para ver los comandos"
 ### 🔒 Comandos Privados (No públicos)
 | Comando | Descripción | Permisos |
 |---------|-------------|----------|
-| `/logtest` | Prueba el sistema de logs | Admin |
+| `/testlog` | Prueba el sistema de logs | Admin |
 | `/testgreeting` | Prueba el mensaje de bienvenida | Admin |
-| `/emojis` | Gestión de emojis | Admin |
+| `/emojis` | Lista emojis personalizados del servidor | Todos (efímero) |
 
-> **Nota sobre recordatorios globales:** Solo usuarios con rol de Admin, Comision Directiva o Lead pueden crear recordatorios globales usando el parámetro `global:True`.
+> **Notas importantes:**
+> - **Recordatorios globales:** Solo usuarios con permisos de Administrador, Gestionar Servidor, o roles que contengan "admin", "comision" o "lead" pueden crear recordatorios globales.
+> - **Salas de voz:** Se auto-eliminan tras 1 minuto de estar vacías. Los canales son temporales.
+> - **Límite de recordatorios:** Máximo 10 recordatorios activos por usuario.
 
 ## 📚 Documentación
 
@@ -222,11 +227,34 @@ git push origin feature/mi-nuevo-comando
 
 Lee la [Contributing Guide](./discord-bot-docs/contributing.md) completa para más detalles.
 
+## 🔒 Seguridad y Permisos
+
+### Validaciones Implementadas
+- ✅ **Verificación de permisos** antes de operaciones sensibles
+- ✅ **Validación de entrada** en todos los comandos (longitud, formato, vacío)
+- ✅ **Rate limiting** con cooldowns configurables
+- ✅ **Verificación de canales** antes de enviar mensajes
+- ✅ **Cleanup automático** de recursos (timeouts, Maps, listeners)
+- ✅ **Manejo de DMs bloqueados** con fallback a canales
+- ✅ **Admin-only commands** con verificación de permisos
+- ✅ **No SQL injection** (no hay queries de DB actualmente)
+- ✅ **Token protection** (.env en .gitignore, validación pre-login)
+
+### Permisos del Bot Requeridos
+- `ManageChannels` - Para crear/eliminar salas de voz
+- `SendMessages` - Para enviar mensajes en canales
+- `AddReactions` - Para crear encuestas
+- `ViewChannel` - Para acceder a canales configurados
+- `Connect` - Para gestionar salas de voz (opcional, para tracking)
+
 ## 🛠️ Tecnologías
 
 - **[Node.js](https://nodejs.org/)** v18+ - Runtime de JavaScript
 - **[Discord.js](https://discord.js.org/)** v14 - Librería para Discord API
+- **[dotenv](https://www.npmjs.com/package/dotenv)** - Gestión de variables de entorno
 - **[PM2](https://pm2.keymetrics.io/)** - Process manager para producción
+- **[SQLite3](https://www.npmjs.com/package/sqlite3)** - Base de datos (planificada para gamificación)
+- **[node-cron](https://www.npmjs.com/package/node-cron)** - Programación de tareas (reservada para uso futuro)
 
 ## 📜 Scripts Disponibles
 
