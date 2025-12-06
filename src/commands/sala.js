@@ -2,6 +2,8 @@ const { SlashCommandBuilder, EmbedBuilder, ChannelType, PermissionFlagsBits } = 
 
 // Store active rooms in memory (in production, use a database)
 const activeGroups = new Map();
+// Track when channels became empty
+const emptyTimestamps = new Map();
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -95,19 +97,36 @@ module.exports = {
                 await interaction.editReply({ embeds: [embed] });
 
                 // Monitor channel for cleanup
-                const checkInterval = setInterval(async () => {
-                    try {
-                        const channel = await interaction.guild.channels.fetch(voiceChannel.id);
-                        if (channel && channel.members.size === 0) {
-                            await channel.delete('Sala vacía');
-                            activeGroups.delete(nombre.toLowerCase());
+                // Wait 5 minutes before starting to check, giving people time to join
+                setTimeout(() => {
+                    const checkInterval = setInterval(async () => {
+                        try {
+                            const channel = await interaction.guild.channels.fetch(voiceChannel.id, { force: true });
+                            if (channel && channel.members.size === 0) {
+                                const now = Date.now();
+                                const emptyTime = emptyTimestamps.get(voiceChannel.id);
+                                
+                                if (!emptyTime) {
+                                    // Channel just became empty, mark the time
+                                    emptyTimestamps.set(voiceChannel.id, now);
+                                } else if (now - emptyTime >= 60000) {
+                                    // Channel has been empty for 1 minute, delete it
+                                    await channel.delete('Sala vacía por más de 1 minuto');
+                                    activeGroups.delete(nombre.toLowerCase());
+                                    emptyTimestamps.delete(voiceChannel.id);
+                                    clearInterval(checkInterval);
+                                }
+                            } else if (channel && channel.members.size > 0) {
+                                // Channel has people, clear the empty timestamp
+                                emptyTimestamps.delete(voiceChannel.id);
+                            }
+                        } catch (error) {
                             clearInterval(checkInterval);
+                            activeGroups.delete(nombre.toLowerCase());
+                            emptyTimestamps.delete(voiceChannel.id);
                         }
-                    } catch (error) {
-                        clearInterval(checkInterval);
-                        activeGroups.delete(nombre.toLowerCase());
-                    }
-                }, 30000); // Check every 30 seconds
+                    }, 30000); // Check every 30 seconds
+                }, 300000); // Wait 5 minutes before starting checks
 
             } catch (error) {
                 console.error('Error creating group:', error);
