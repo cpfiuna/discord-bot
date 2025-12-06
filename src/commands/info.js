@@ -25,6 +25,11 @@ module.exports = {
                     inline: false
                 },
                 {
+                    name: '🤖 Bot Features',
+                    value: '• Recordatorios personales y globales\n• Salas de voz temporales (auto-limpieza tras 1 min vacía)\n• Sistema de encuestas\n• Compartir código formateado\n• Y más! Usa `/help` para ver todos los comandos.',
+                    inline: false
+                },
+                {
                     name: '🤝 Uníte',
                     value: 'Todos son bienvenidos, sin importar su nivel de experiencia en programación. Completá el formulario de admisión [acá](https://cpfiuna.io/admision).',
                     inline: false

@@ -118,8 +118,8 @@ BOT_PRESENCE="Usa /help para ver los comandos"
 
 ### 🎙️ Salas de Voz
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|
-| `/sala crear` | Crea una sala de voz temporal | `/sala crear nombre:"Estudio" descripcion:"Python" limite:5` |
+|---------|-------------|---------|------|
+| `/sala crear` | Crea una sala de voz temporal (se elimina tras 1 minuto vacía) | `/sala crear nombre:"Estudio" descripcion:"Python" limite:5` |
 | `/sala listar` | Lista todas las salas disponibles | `/sala listar` |
 | `/sala unirse` | Información sobre una sala específica | `/sala unirse nombre:"Estudio"` |
 

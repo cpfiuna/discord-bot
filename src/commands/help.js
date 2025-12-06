@@ -79,11 +79,12 @@ module.exports = {
             sala: {
                 category: '🎙️ Salas de Voz',
                 usage: '/sala <crear|unirse|listar>',
-                description: 'Gestiona salas de voz temporales para estudio o proyectos. Las salas se eliminan automáticamente cuando quedan vacías.',
+                description: 'Gestiona salas de voz temporales para estudio o proyectos. Las salas se eliminan automáticamente después de 1 minuto de estar vacías.',
                 examples: [
                     '`/sala crear nombre:"Estudio Python" descripcion:"Estudiando para el final" limite:5`',
                     '`/sala listar` - Ver todas las salas disponibles',
-                    '`/sala unirse nombre:"Estudio Python"` - Información sobre una sala específica'
+                    '`/sala unirse nombre:"Estudio Python"` - Información sobre una sala específica',
+                    '**Nota:** Las salas vacías se eliminan automáticamente tras 1 minuto sin miembros'
                 ]
             },
             code: {
