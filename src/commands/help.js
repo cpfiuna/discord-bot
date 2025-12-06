@@ -175,7 +175,7 @@ module.exports = {
             inline: false
         });
 
-        embed.setFooter({ text: 'Club de Programación FIUNA | Usa /help comando:<nombre> para más detalles' });
+        embed.setFooter({ text: 'Club de Programación FIUNA | Lista de Comandos' });
 
         const payload = { embeds: [embed], flags: 64 };
 

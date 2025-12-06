@@ -23,7 +23,18 @@ module.exports = {
         // Use configurable presence text (falls back to a sensible Spanish default)
         const { ActivityType } = require('discord.js');
         const presenceText = process.env.BOT_PRESENCE || 'Listo — usa "/" para comandos';
-        client.user.setActivity(presenceText, { type: ActivityType.Watching });
+        
+        // Map BOT_PRESENCE_TYPE env var to ActivityType (default: Listening)
+        const typeMap = {
+            'Playing': ActivityType.Playing,
+            'Streaming': ActivityType.Streaming,
+            'Listening': ActivityType.Listening,
+            'Watching': ActivityType.Watching,
+            'Competing': ActivityType.Competing,
+        };
+        const presenceType = typeMap[process.env.BOT_PRESENCE_TYPE] || ActivityType.Listening;
+        
+        client.user.setActivity(presenceText, { type: presenceType });
 
         // Send a startup log identifying this instance (hostname + PID)
         try {
