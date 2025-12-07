@@ -31,10 +31,9 @@ module.exports = {
                 });
             }
 
-            // Defer immediately to prevent timeout
             await interaction.deferReply({ ephemeral: true });
 
-            const comandoEspecifico = interaction.options.getString('comando');
+        const comandoEspecifico = interaction.options.getString('comando');
 
         // Define admin command details
         const commandDetails = {
@@ -194,5 +193,17 @@ module.exports = {
         embed.setFooter({ text: 'Club de Programación FIUNA | Comandos de Administración' });
 
         await interaction.editReply({ embeds: [embed] });
+        } catch (error) {
+            console.error('adminhelp command error:', error);
+            try {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply({ content: '❌ Ocurrió un error al mostrar la ayuda.' });
+                } else {
+                    await interaction.reply({ content: '❌ Ocurrió un error al mostrar la ayuda.', ephemeral: true });
+                }
+            } catch (e) {
+                console.error('Failed to send error message:', e);
+            }
+        }
     },
 };
