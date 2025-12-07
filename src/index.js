@@ -10,7 +10,11 @@ const client = new Client({
     intents: [
             GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMembers,
-            GatewayIntentBits.GuildVoiceStates
+            GatewayIntentBits.GuildVoiceStates,
+            // Required for message-based commands (e.g. `!upload`, `!send`, `!say` message flow)
+            GatewayIntentBits.GuildMessages,
+            // Privileged intent: enable in the Developer Portal (if your bot needs to read message content)
+            GatewayIntentBits.MessageContent,
     ]
 });
 

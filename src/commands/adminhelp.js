@@ -15,22 +15,26 @@ module.exports = {
                     { name: 'setlogchannel', value: 'setlogchannel' },
                     { name: 'botstats', value: 'botstats' },
                     { name: 'serverinfo', value: 'serverinfo' },
-                    { name: 'shutdown', value: 'shutdown' }
+                    { name: 'shutdown', value: 'shutdown' },
+                    { name: 'say', value: 'say' },
+                    { name: 'imagen', value: 'imagen' }
                 ))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     
     async execute(interaction) {
-        // Double-check permissions at runtime
-        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-            return interaction.reply({ 
-                content: '❌ Solo los administradores pueden usar este comando.', 
-                flags: 64 
-            });
-        }
+        try {
+            // Double-check permissions at runtime
+            if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+                return interaction.reply({ 
+                    content: '❌ Solo los administradores pueden usar este comando.', 
+                    ephemeral: true
+                });
+            }
 
-        await interaction.deferReply({ flags: 64 });
+            // Defer immediately to prevent timeout
+            await interaction.deferReply({ ephemeral: true });
 
-        const comandoEspecifico = interaction.options.getString('comando');
+            const comandoEspecifico = interaction.options.getString('comando');
 
         // Define admin command details
         const commandDetails = {
@@ -101,6 +105,30 @@ module.exports = {
                     '**Advertencia:** Requiere acceso al servidor para reiniciarlo',
                     '**Nota:** Usa solo para mantenimiento planificado'
                 ]
+            },
+            say: {
+                category: '📬 Mensajería',
+                usage: '/say',
+                description: 'Envía un mensaje formateado a través del bot. Abre un modal para ingresar texto multilínea con soporte completo de Markdown y citas.',
+                implemented: true,
+                examples: [
+                    '`/say` - Abrir modal para escribir mensaje',
+                    '**Soporta:** Markdown, citas (>), negritas, cursivas, saltos de línea',
+                    '**Uso:** Útil para anuncios, reglas, mensajes oficiales del servidor',
+                    '**Nota:** El mensaje se envía en el canal actual'
+                ]
+            },
+            imagen: {
+                category: '📬 Mensajería',
+                usage: '/imagen <archivo:nombre>',
+                description: 'Envía una imagen o archivo previamente guardado desde el almacenamiento del bot como archivo adjunto real (no embed).',
+                implemented: true,
+                examples: [
+                    '`/imagen archivo:logo.png` - Enviar imagen guardada',
+                    '**Paso previo:** Sube una imágen para enviar y escribe `!upload` (mensaje) para guardar archivos primero',
+                    '**Nota:** Los archivos se guardan en `assets/uploads`',
+                    '**Uso:** Ideal para imágenes oficiales, logos, recursos del servidor'
+                ]
             }
         };
 
@@ -134,7 +162,8 @@ module.exports = {
         const categories = {
             '⚙️ Configuración': [],
             '🔧 Mantenimiento': [],
-            '📊 Diagnóstico': []
+            '📊 Diagnóstico': [],
+            '📬 Mensajería': []
         };
 
         for (const [cmdName, details] of Object.entries(commandDetails)) {
