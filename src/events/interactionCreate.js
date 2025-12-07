@@ -1,4 +1,8 @@
 const { Collection } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+
+const UPLOAD_DIR = path.join(process.cwd(), 'assets', 'uploads');
 
 // Map of commandName -> Map of userId -> timestamp
 const cooldowns = new Collection();
@@ -6,6 +10,41 @@ const cooldowns = new Collection();
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction) {
+        // Autocomplete handling for slash command options
+        if (interaction.isAutocomplete && interaction.isAutocomplete()) {
+            try {
+                const cmd = interaction.commandName;
+                const focused = interaction.options.getFocused();
+
+                if (cmd === 'imagen' && typeof focused === 'string') {
+                    // read files from uploads dir
+                    let files = [];
+                    try {
+                        files = fs.readdirSync(UPLOAD_DIR).filter(f => fs.statSync(path.join(UPLOAD_DIR, f)).isFile());
+                    } catch (e) {
+                        files = [];
+                    }
+
+                    const choices = files
+                        .filter(f => f.toLowerCase().startsWith(focused.toLowerCase()))
+                        .slice(0, 25)
+                        .map(f => ({ name: f, value: f }));
+
+                    // If no match, offer top 10
+                    if (choices.length === 0) {
+                        const fallback = files.slice(0, 10).map(f => ({ name: f, value: f }));
+                        await interaction.respond(fallback);
+                    } else {
+                        await interaction.respond(choices);
+                    }
+                    return;
+                }
+            } catch (err) {
+                console.error('Autocomplete handler error:', err);
+                try { await interaction.respond([]); } catch (e) { /* ignore */ }
+                return;
+            }
+        }
         // Manejar comandos slash
         if (interaction.isChatInputCommand()) {
             const command = interaction.client.commands.get(interaction.commandName);

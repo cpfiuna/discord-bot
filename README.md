@@ -120,40 +120,41 @@ BOT_PRESENCE="Usa /help para ver los comandos"
 
 ### 🎙️ Salas de Voz
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|------|
+|---------|-------------|---------|
 | `/sala crear` | Crea una sala de voz temporal (se elimina tras 1 minuto vacía) | `/sala crear nombre:"Estudio" descripcion:"Python" limite:5` |
 | `/sala listar` | Lista todas las salas disponibles | `/sala listar` |
 | `/sala unirse` | Información sobre una sala específica | `/sala unirse nombre:"Estudio"` |
 
 ### 🔧 Sistema
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|---|
+|---------|-------------|---------|
 | `/ping` | Verifica que el bot esté activo | `/ping` |
 
 ### 🔒 Comandos de Administrador
 
 #### ⚙️ Configuración
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|---|
+|---------|-------------|---------|
 | `/setpresence` | Cambia la presencia (estado) del bot | `/setpresence texto:"Ayudando" tipo:Playing` |
 | `/setgreeting` | Configura mensajes de bienvenida automáticos | `/setgreeting canal:#bienvenidas` |
 | `/setlogchannel` | Configura el canal de logs de auditoría | `/setlogchannel canal:#logs-bot` |
 
 #### 📊 Diagnóstico
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|---|
+|---------|-------------|---------|
 | `/botstats` | Muestra estadísticas del bot (uptime, RAM, CPU) | `/botstats` |
 | `/serverinfo` | Información detallada del servidor | `/serverinfo` |
 
 #### 📬 Mensajería
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|---|
+|---------|-------------|---------|
 | `/say` | Envía un mensaje formateado a través del bot | `/say` (abre modal) |
 | `/imagen` | Envía una imagen guardada como archivo adjunto | `/imagen archivo:logo.png` |
+| `/listar` | Lista archivos guardados disponibles en `assets/uploads` (admin) | `/listar` |
 
 #### 🔧 Mantenimiento
 | Comando | Descripción | Ejemplo |
-|---------|-------------|---------|---|
+|---------|-------------|---------|
 | `/shutdown` | Apaga el bot de forma segura (requiere confirmación) | `/shutdown confirmar:sí` |
 | `/adminhelp` | Ayuda detallada de comandos de administrador | `/adminhelp comando:say` |
 
@@ -166,7 +167,8 @@ BOT_PRESENCE="Usa /help para ver los comandos"
 
 > **Notas importantes:**
 > - **Comandos de administrador:** Requieren permisos de Administrador en Discord.
-> - **Flujo de imágenes:** Para usar `/imagen`, primero sube archivos con `!upload` (mensaje con prefijo, adjunta el archivo y escribe `!upload`). Luego usa `/imagen archivo:nombre.png`.
+> - **Flujo de imágenes:** Para usar `/imagen`, primero sube archivos con `!upload` (mensaje con prefijo, adjunta el archivo y escribe `!upload`). Luego usa `/imagen archivo:nombre.png`. `/imagen` ahora soporta autocomplete en el campo `archivo` para seleccionar archivos guardados.
+> - **Comandos basados en mensajes:** `!upload`, `!say` y `!send` están restringidos a administradores.
 > - **Recordatorios globales:** Solo usuarios con permisos de Administrador, Gestionar Servidor, o roles que contengan "admin", "comision" o "lead" pueden crear recordatorios globales.
 > - **Salas de voz:** Se auto-eliminan tras 1 minuto de estar vacías. Los canales son temporales.
 > - **Límite de recordatorios:** Máximo 10 recordatorios activos por usuario.

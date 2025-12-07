@@ -17,7 +17,8 @@ module.exports = {
                     { name: 'serverinfo', value: 'serverinfo' },
                     { name: 'shutdown', value: 'shutdown' },
                     { name: 'say', value: 'say' },
-                    { name: 'imagen', value: 'imagen' }
+                    { name: 'imagen', value: 'imagen' },
+                    { name: 'listar', value: 'listar' }
                 ))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     
@@ -127,6 +128,16 @@ module.exports = {
                     '**Paso previo:** Sube una imágen para enviar y escribe `!upload` (mensaje) para guardar archivos primero',
                     '**Nota:** Los archivos se guardan en `assets/uploads`',
                     '**Uso:** Ideal para imágenes oficiales, logos, recursos del servidor'
+                ]
+            }
+            ,
+            listar: {
+                category: '📬 Mensajería',
+                usage: '/listar',
+                description: 'Lista los archivos guardados en `assets/uploads` para que los administradores puedan enviarlos con `/imagen`.',
+                implemented: true,
+                examples: [
+                    '`/listar` - Ver los archivos guardados (muestra hasta 50)'
                 ]
             }
         };

@@ -11,8 +11,9 @@ module.exports = {
         .setDescription('Enviar una imagen previamente guardada como archivo adjunto (solo administradores)')
         .addStringOption(opt =>
             opt.setName('archivo')
-               .setDescription('El nombre exacto del archivo almacenado en assets/uploads')
-               .setRequired(true))
+               .setDescription('El nombre exacto del archivo almacenado en assets/uploads (autocomplete disponible)')
+               .setRequired(true)
+               .setAutocomplete(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction) {
