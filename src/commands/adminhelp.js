@@ -120,7 +120,7 @@ module.exports = {
             imagen: {
                 category: '📬 Mensajería',
                 usage: '/imagen <archivo:nombre>',
-                description: 'Envía una imagen o archivo previamente guardado desde el almacenamiento del bot como archivo adjunto real (no embed).',
+                description: 'Envía una imagen o archivo previamente guardada desde el almacenamiento del bot como archivo adjunto real (no embed).',
                 implemented: true,
                 examples: [
                     '`/imagen archivo:logo.png` - Enviar imagen guardada',
